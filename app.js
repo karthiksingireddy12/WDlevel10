@@ -99,7 +99,7 @@ app.get(
   async function (request, response) {
     try {
       const loggedIn = request.user.id;
-      const userName = request.user.firstName + " " + request.user.lastName;
+      const userName = request.user.FirstName + " " + request.user.lastName;
       const overDue = await Todo.overDue(loggedIn);
       const dueToday = await Todo.dueToday(loggedIn);
       const dueLater = await Todo.dueLater(loggedIn);
@@ -137,7 +137,7 @@ app.get("/signup", (request, response) => {
 });
 
 app.post("/users", async (request, response) => {
-  if (!request.body.firstName) {
+  if (!request.body.FirstName) {
     request.flash("error", "Please enter your first name");
     return response.redirect("/signup");
   }
@@ -156,7 +156,7 @@ app.post("/users", async (request, response) => {
   const hashedPwd = await bcrypt.hash(request.body.password, saltRounds);
   try {
     const user = await User.create({
-      firstName: request.body.firstName,
+      FirstName: request.body.FirstName,
       lastName: request.body.lastName,
       email: request.body.email,
       password: hashedPwd,

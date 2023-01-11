@@ -99,7 +99,7 @@ app.get(
   async function (request, response) {
     try {
       const loggedIn = request.user.id;
-      const userName = request.user.FirstName + " " + request.user.lastName;
+      const userName = request.user.FirstName + " " + request.user.LastName;
       const overDue = await Todo.overDue(loggedIn);
       const dueToday = await Todo.dueToday(loggedIn);
       const dueLater = await Todo.dueLater(loggedIn);
@@ -157,7 +157,7 @@ app.post("/users", async (request, response) => {
   try {
     const user = await User.create({
       FirstName: request.body.FirstName,
-      lastName: request.body.lastName,
+      LastName: request.body.LastName,
       email: request.body.email,
       password: hashedPwd,
     });

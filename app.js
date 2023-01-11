@@ -44,16 +44,16 @@ passport.use(
   new LocalStratergy(
     {
       usernameField: "email",
-      passwordField: "password",
+      SecurityPasswordField: "SecurityPassword",
     },
-    (username, password, done) => {
+    (username, SecurityPassword, done) => {
       User.findOne({ where: { email: username } })
         .then(async (user) => {
-          const result = await bcrypt.compare(password, user.password);
+          const result = await bcrypt.compare(SecurityPassword, user.SecurityPassword);
           if (result) {
             return done(null, user);
           } else {
-            return done(null, false, { message: "Invalid password" });
+            return done(null, false, { message: "Invalid SecurityPassword" });
           }
         })
         .catch(() => {
@@ -145,21 +145,21 @@ app.post("/users", async (request, response) => {
     request.flash("error", "Please enter email ID");
     return response.redirect("/signup");
   }
-  if (!request.body.password) {
-    request.flash("error", "Please enter your password");
+  if (!request.body.SecurityPassword) {
+    request.flash("error", "Please enter your SecurityPassword");
     return response.redirect("/signup");
   }
-  if (request.body.password < 8) {
-    request.flash("error", "Password length should be atleast 8");
+  if (request.body.SecurityPassword < 8) {
+    request.flash("error", "SecurityPassword length should be atleast 8");
     return response.redirect("/signup");
   }
-  const hashedPwd = await bcrypt.hash(request.body.password, saltRounds);
+  const hashedPwd = await bcrypt.hash(request.body.SecurityPassword, saltRounds);
   try {
     const user = await User.create({
       FirstName: request.body.FirstName,
       LastName: request.body.LastName,
       email: request.body.email,
-      password: hashedPwd,
+      SecurityPassword: hashedPwd,
     });
     request.login(user, (err) => {
       if (err) {
@@ -192,7 +192,7 @@ app.post(
     response.redirect("/todos");
   }
 );
-// here we redirect to the   home page and then back to the login page again   when     the user is logged in again    without  password  confirmation   and   then back to the home page again when the user is logged in again with password confirmation
+// here we redirect to the   home page and then back to the login page again   when     the user is logged in again    without  SecurityPassword  confirmation   and   then back to the home page again when the user is logged in again with SecurityPassword confirmation
 app.get("/signout", (request, response, next) => {
   request.logout((err) => {
     if (err) {
